@@ -37,10 +37,22 @@ async function showMovieDetails(movieId) {
     try {
         const response = await fetch(`${apiUrl}/movie/${movieId}?api_key=${apiKey}`);
         const movie = await response.json();
+        selectedMovieId = movieId; // Guarda el ID de la película seleccionada
         updateMovieDetails(movie); // Actualiza el contenedor de detalles con la información de la película
+        movieDetails.classList.remove('hidden'); // Muestra la sección de detalles
     } catch (error) {
         console.error('Error fetching movie details:', error);
     }
+}
+
+function updateMovieDetails(movie) {
+    detailsContainer.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+        <h3>${movie.title}</h3>
+        <p>${movie.overview}</p>
+        <p><strong>Release Date:</strong> ${movie.release_date}</p>
+        <p><strong>Rating:</strong> ${movie.vote_average}</p>
+    `;
 }
 
 searchButton.addEventListener('click', async () => {
